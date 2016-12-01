@@ -9,4 +9,4 @@ Check out the [following video on Twitter](https://twitter.com/stankowic_devel/s
 
 # Credits
 * Music loop taken from [freesound.org](https://www.freesound.org/people/rhodesmas/sounds/322275)
-* Christmas tree tray icon taken from: [psdblast.com](http://psdblast.com/flat-christmas-icon-set-psd)
+* Christmas tree tray icon taken from [psdblast.com](http://psdblast.com/flat-christmas-icon-set-psd)
