@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Media;
 using System.Threading;
@@ -18,7 +15,6 @@ namespace XmasBusylight
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new FormAbout());
             Application.Run(new AgentContext());
         }
     }
@@ -26,37 +22,56 @@ namespace XmasBusylight
     //TrayIcon
     public class AgentContext : ApplicationContext
     {
+        //Variables
         private NotifyIcon trayIcon;
+        SoundPlayer soundEffect;
+        private Fml workerObject;
+        private Thread fmlThread;
 
         public AgentContext()
         {
             //Initialize tray icon
             trayIcon = new NotifyIcon();      
-            trayIcon.Icon = XmasBusylight.Properties.Resources.XmasTree;
+            trayIcon.Icon = Properties.Resources.XmasTree;
             trayIcon.Text = "XmasBusylight";
             trayIcon.Visible = true;
+            trayIcon.ContextMenu = new ContextMenu(
+                new MenuItem[] {
+                    new MenuItem("Stop it dad!", die)
+                }
+            );
 
             //Start annoying user
-            SoundPlayer soundEffect = new SoundPlayer(XmasBusylight.Properties.Resources.Jingle);
+            soundEffect = new SoundPlayer(Properties.Resources.Jingle);
             soundEffect.PlayLooping();
+            workerObject = new Fml();
+            fmlThread = new Thread(workerObject.annoy);
+            fmlThread.Start();
 
-            var controller = new Busylight.SDK();
-            Random rnd = new Random();
-            do
-            {
-                //Get random colors and sound
-                int random_r = rnd.Next(1, 255);
-                int random_g = rnd.Next(1, 255);
-                int random_b = rnd.Next(1, 255);
-
-                //Annoy user
-                Console.WriteLine("Setting color to RGB {0}/{1}/{2}", random_r, random_g, random_b);
-                controller.Alert(new Busylight.BusylightColor { RedRgbValue = random_r, GreenRgbValue = random_g, BlueRgbValue = random_b }, Busylight.BusylightSoundClip.IM1, Busylight.BusylightVolume.Mute);
-                System.Threading.Thread.Sleep(1000);
-            }
-            while (true);
+            //Friendly wish merry christmas
+            trayIcon.BalloonTipTitle = "Hooray!";
+            trayIcon.BalloonTipText = "Merry christmas and a happy new year!";
+            trayIcon.BalloonTipIcon = ToolTipIcon.Info;
+            trayIcon.ShowBalloonTip(10000);
         }
 
+        private void die(object sender, EventArgs e)
+        {
+            //Killing me softly
+            try
+            {
+                trayIcon.Visible = false;
+                fmlThread.Abort();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine("Error while dying: '{0}'", exc.Message);
+            }
+            finally
+            {
+                Application.Exit();
+            }
+        }
     }
 
 }
