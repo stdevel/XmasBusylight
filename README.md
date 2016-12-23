@@ -1,6 +1,8 @@
 # XmasBusylight
 This is a dumb demonstration of using the [Phenom Busylight UC SDK](http://www.plenom.com/support/develop/). It just makes your Busylight flash in random colors and plays a christmas sound loop. Hooray!
 
+![Screenshot](https://raw.githubusercontent.com/stdevel/XmasBusylight/master/Screenshot.jpg "Screenshot")
+
 # Requirements
 You just need to execute the program and annoy your office collegaues by mounting the Busylight on a fancy hat.
 
